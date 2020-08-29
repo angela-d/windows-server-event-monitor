@@ -6,11 +6,11 @@
 	$smtpServer = "yourserver.example.com"
 	$smtpPort = "25"
 	$authUser = "you@example.com"
-  # filter to limit hours mailings are sent
-  $sendHourStart = Get-Date '06:00'
-  $sendHourEnd = Get-Date '13:00'
-  # the following limits time between mailings in minutes; redundant if you have a decent schedule in task scheduler
-  $emailThreshold = "0"
+	# filter to limit hours mailings are sent
+	$sendHourStart = Get-Date '06:00'
+	$sendHourEnd = Get-Date '13:00'
+	# the following limits time between mailings in minutes; redundant if you have a decent schedule in task scheduler
+	$emailThreshold = "0"
 ## END CONFIG
 
 # for first run; create if doesn't exist.. powershell handles this backwards by default
@@ -28,13 +28,11 @@ $date = (Get-Date).AddMinutes(-61)
 $dayOfWeek = (Get-Date).DayOfWeek
 
 # pull events i wish to be notified about
-
-	$Failure = Get-WinEvent -FilterHashTable @{
-		LogName=$eventLog
-	    StartTime=$date;
-	    ID=$eventToCheck
-		} | select Id,TimeCreated,Message
-
+$Failure = Get-WinEvent -FilterHashTable @{
+	LogName=$eventLog
+    StartTime=$date;
+    ID=$eventToCheck
+} | select Id,TimeCreated,Message
 
 # do a sanity check to ensure we didn't just get a notification, already
 $lastCheck = gci "C:\Scripts\lastCheck.txt"
@@ -59,7 +57,7 @@ if ($totalMatches -And $dayOfWeek -notmatch "Saturday|Sunday" -And $timeNow -ge 
 
 	# email notification
 	$Body = "Event $eventToCheck from $eventLog log has been spotted $lastNotification."
-  Send-MailMessage -From $from -to $to -Subject "$env:computername - $totalMatches matches to Event Monitor" -Body ($Failure | Out-String) -SmtpServer $smtpServer -port $smtpPort -Credential $authUser -UseSsl
+	Send-MailMessage -From $from -to $to -Subject "$env:computername - $totalMatches matches to Event Monitor" -Body ($Failure | Out-String) -SmtpServer $smtpServer -port $smtpPort -Credential $authUser -UseSsl
 
   } else {
 		Write-Host "A notification was sent recently, not sending another! Sent $timeSincelastCheck mins ago"
@@ -67,6 +65,6 @@ if ($totalMatches -And $dayOfWeek -notmatch "Saturday|Sunday" -And $timeNow -ge 
 	}
 
 } else {
-  Write-Host "Everything is good"
+	Write-Host "Everything is good"
 	Write-Host "Last occurence: $timeSincelastCheck"
 }
