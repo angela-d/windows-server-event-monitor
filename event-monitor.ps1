@@ -30,8 +30,8 @@ $dayOfWeek = (Get-Date).DayOfWeek
 # pull events i wish to be notified about
 $Failure = Get-WinEvent -FilterHashTable @{
 	LogName=$eventLog
-    StartTime=$date;
-    ID=$eventToCheck
+		StartTime=$date;
+		ID=$eventToCheck
 } | select Id,TimeCreated,Message
 
 # do a sanity check to ensure we didn't just get a notification, already
@@ -57,7 +57,7 @@ if ($totalMatches -And $dayOfWeek -notmatch "Saturday|Sunday" -And $timeNow -ge 
 
 	# email notification
 	$Body = "Event $eventToCheck from $eventLog log has been spotted $lastNotification."
-	Send-MailMessage -From $from -to $to -Subject "$env:computername - $totalMatches matches to Event Monitor" -Body ($Failure | Out-String) -SmtpServer $smtpServer -port $smtpPort -Credential $authUser -UseSsl
+	Send-MailMessage -From $from -to $to -Subject "$env:computername - $totalMatches matches to Event Monitor" -Body ($Failure | Format-Table -auto -wrap | Out-String) -SmtpServer $smtpServer -port $smtpPort -Credential $authUser -UseSsl
 
   } else {
 		Write-Host "A notification was sent recently, not sending another! Sent $timeSincelastCheck mins ago"

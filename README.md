@@ -4,16 +4,40 @@ Because it seems like nearly every update, Windows Server has a security patch y
 Let Windows monitor for this junk, instead.
 
 ## What Event Monitor Does
-This super simple script allows you set (multiple) event IDs of interest, designate what logs to inspect and it will email you each time it finds an event that matches your criteria, along with snippets of the event message.
+This super simple script allows you set (multiple) event IDs of interest, designate what logs to inspect and it will email you each time it finds an event that matches your criteria, along with a full copy of the event message.
 
 - **Subject:** DC3 - 2 matches to Event Monitor
 - **Message body:**
 
 ```text
-Id TimeCreated           Message                                                                                                       
--- -----------           -------                                                                                                       
-5829 8/29/2020 6:53:39 AM  The Netlogon service allowed a vulnerable Netlogon secure channel connection...
-5829 8/28/2020 7:59:18 AM  The Netlogon service allowed a vulnerable Netlogon secure channel connection...
+Id TimeCreated           Message                                             
+-- -----------           -------                                             
+5827 9/10/2020 10:14:37 AM The Netlogon service denied a vulnerable Netlogon   
+                         secure channel connection from a machine account.   
+
+                          Machine SamAccountName: MAC-example                 
+                          Domain: example.com.                                 
+                          Account Type: Domain Member                       
+                          Machine Operating System: OS X                     
+                          Machine Operating System Build: 6.1:10.16         
+                          Machine Operating System Service Pack: N/A         
+
+                         For more information about why this was denied,     
+                         please visit                                       
+                         https://go.microsoft.com/fwlink/?linkid=2133485.   
+5827 9/10/2020 10:14:37 AM The Netlogon service denied a vulnerable Netlogon   
+                         secure channel connection from a machine account.   
+
+                          Machine SamAccountName: MAC-example                 
+                          Domain: example.com.                                 
+                          Account Type: Domain Member                       
+                          Machine Operating System: OS X                     
+                          Machine Operating System Build: 6.1:10.16         
+                          Machine Operating System Service Pack: N/A         
+
+                         For more information about why this was denied,     
+                         please visit                                       
+                         https://go.microsoft.com/fwlink/?linkid=2133485.    
 ```
 (example messages - event ID 5829 is what prompted this script to be assembled.)
 
